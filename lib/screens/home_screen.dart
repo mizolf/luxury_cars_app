@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:luxury_cars_app/models/car.dart';
 import 'package:luxury_cars_app/screens/car_details_screen.dart';
+import 'package:luxury_cars_app/util/bottom_nav_bar.dart';
 import 'package:luxury_cars_app/util/car_home_info.dart';
 import 'package:luxury_cars_app/util/recommended_car_info.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -15,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<Car> _cars = cars;
-  List<Car> _recommended = recommended;
+  final List<Car> _recommended = recommended;
   final _scrollController = ScrollController();
   int _activeIndex = 0;
 
@@ -28,6 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
         hintStyle: const TextStyle(color: Colors.grey),
         prefixIcon: const Icon(
           Icons.search,
+          color: Colors.grey,
+        ),
+        suffixIcon: const Icon(
+          Icons.filter_list_rounded,
           color: Colors.grey,
         ),
         border: OutlineInputBorder(
@@ -66,37 +71,39 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            toolbarHeight: 100,
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.grey.shade300,
-            foregroundColor: Colors.black,
-            title: const Padding(
-              padding: EdgeInsets.only(left: 16.0),
-              child: Text(
-                'Luxury',
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 22,
-                    letterSpacing: 2.0),
-              ),
+          toolbarHeight: 100,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.grey.shade200,
+          foregroundColor: Colors.black,
+          title: const Padding(
+            padding: EdgeInsets.only(left: 16.0),
+            child: Text(
+              'Luxury',
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 22,
+                  letterSpacing: 2.0),
             ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: GestureDetector(
-                  child: Image.asset(
-                    'assets/icons/notification.png',
-                    height: 24,
-                  ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: GestureDetector(
+                child: Image.asset(
+                  'assets/icons/notification.png',
+                  height: 24,
                 ),
-              )
-            ]),
+              ),
+            )
+          ],
+        ),
+        bottomNavigationBar: const BottomNavBar(),
         backgroundColor: Colors.white,
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.grey.shade300, Colors.white],
-              begin: Alignment.topCenter,
+              colors: [Colors.grey.shade200, Colors.white],
+              begin: Alignment.center,
               end: Alignment.bottomCenter,
             ),
           ),
@@ -115,9 +122,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ListView.builder(
                       controller: _scrollController,
                       scrollDirection: Axis.horizontal,
-                      itemCount: cars.length,
+                      itemCount: _cars.length,
                       itemBuilder: (context, index) {
-                        return CarHomeInfo(cars[index]);
+                        return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    CarDetailsScreen(car: _cars[index]),
+                              ));
+                            },
+                            child: CarHomeInfo(_cars[index]));
                       },
                     ),
                   ),
@@ -127,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Center(
                     child: AnimatedSmoothIndicator(
                       activeIndex: _activeIndex,
-                      count: cars.length,
+                      count: _cars.length,
                       effect: const ExpandingDotsEffect(
                         dotColor: Colors.grey,
                         activeDotColor: Colors.black,
@@ -139,9 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     height: 30,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: const Text(
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
                       'Recomendation',
                       style: TextStyle(
                           letterSpacing: 1,
@@ -152,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2),
@@ -163,7 +177,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const CarDetailsScreen(),
+                                builder: (context) =>
+                                    CarDetailsScreen(car: _recommended[index]),
                               ));
                             },
                             child: RecommendedCarInfo(_recommended[index])),
