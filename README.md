@@ -1,16 +1,8 @@
-# luxury_cars_app
 
-A new Flutter project.
+Luxury cars App UI in Flutter
 
-## Getting Started
+![image](https://github.com/user-attachments/assets/ea5f17da-87bf-43ea-8ce2-02445f88042a)
 
-This project is a starting point for a Flutter application.
+![image](https://github.com/user-attachments/assets/6af053ea-d5d0-456b-98cf-d4d8aa21ba17)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://github.com/user-attachments/assets/f3619b32-0271-4715-9172-419aa72014ff)
